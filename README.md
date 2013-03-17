@@ -38,7 +38,7 @@ Example
 * templates
     * mainview.html
 
-** mainview.html:**
+**mainview.html:**
 
 ```html
 <div id='mainview'>
