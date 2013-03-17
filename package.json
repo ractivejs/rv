@@ -1,0 +1,18 @@
+{
+  "name": "require-anglebars-plugin",
+  "version": "0.1.0",
+  "description": "RequireJS plugin to precompile Anglebars templates",
+  "main": "abc.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rich-Harris/require-anglebars-plugin.git"
+  },
+  "keywords": [
+    "requirejs",
+    "anglebars",
+    "templating",
+    "templates"
+  ],
+  "author": "Rich Harris",
+  "license": "MIT"
+}
