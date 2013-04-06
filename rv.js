@@ -1,6 +1,6 @@
 /*global define, XMLHttpRequest */
 
-define( [ 'text', 'Anglebars' ], function ( text, Anglebars ) {
+define( [ 'text', 'Ractive' ], function ( text, Ractive ) {
 
 	'use strict';
 
@@ -14,7 +14,7 @@ define( [ 'text', 'Anglebars' ], function ( text, Anglebars ) {
 			}
 
 			text.get( req.toUrl( name ), function ( template ) {
-				var result = Anglebars.compile( template );
+				var result = Ractive.compile( template );
 
 				if ( config.isBuild ) {
 					buildMap[ name ] = result;

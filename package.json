@@ -1,15 +1,15 @@
 {
-  "name": "require-anglebars-plugin",
+  "name": "require-ractive-plugin",
   "version": "0.1.0",
-  "description": "RequireJS plugin to precompile Anglebars templates",
-  "main": "abc.js",
+  "description": "RequireJS plugin to precompile Ractive templates",
+  "main": "rv.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rich-Harris/require-anglebars-plugin.git"
+    "url": "https://github.com/Rich-Harris/require-ractive-plugin.git"
   },
   "keywords": [
     "requirejs",
-    "anglebars",
+    "ractive",
     "templating",
     "templates"
   ],
