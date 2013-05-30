@@ -1,6 +1,6 @@
 {
   "name": "require-ractive-plugin",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "RequireJS plugin to precompile Ractive templates",
   "main": "rv.js",
   "repository": {
