@@ -80,6 +80,7 @@ Changelog
 * 0.1.0 - first version
 * 0.1.1 - renamed. Anglebars is now Ractive
 * 0.1.2 - Updated to use Ractive 0.3.0 API
+* 0.1.3 - file extension bug fix
 
 
 [1]: https://github.com/Rich-Harris/Ractive
