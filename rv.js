@@ -8,12 +8,12 @@ define( [ 'text', 'Ractive' ], function ( text, Ractive ) {
 
 	return {
 		load: function ( name, req, onload, config ) {
-			// add .html extension
-			if ( name.substr( -5 ) !== '.html' ) {
-				name += '.html';
-			}
+			var filename;
 
-			text.get( req.toUrl( name ), function ( template ) {
+			// add .html extension
+			filename = name + ( ( name.substr( -5 ) !== '.html' ) ? '.html' : '' );
+
+			text.get( req.toUrl( filename ), function ( template ) {
 				var result = Ractive.parse( template );
 
 				if ( config.isBuild ) {
@@ -25,11 +25,6 @@ define( [ 'text', 'Ractive' ], function ( text, Ractive ) {
 		},
 
 		write: function ( pluginName, name, write ) {
-			// add .html extension
-			if ( name.substr( -5 ) !== '.html' ) {
-				name += '.html';
-			}
-
 			if ( buildMap[ name ] === undefined ) {
 				throw 'Could not parse template ' + name;
 			}
