@@ -1,7 +1,7 @@
 {
-  "name": "require-ractive-plugin",
+  "name": "requirejs-ractive",
   "version": "0.1.3",
-  "description": "RequireJS plugin to precompile Ractive templates",
+  "description": "RequireJS plugin to preparse Ractive templates",
   "main": "rv.js",
   "repository": {
     "type": "git",
@@ -13,6 +13,9 @@
     "templating",
     "templates"
   ],
+  "dependencies": [{
+    "requirejs-text": "~2.0.10"
+  }],
   "author": "Rich Harris",
   "license": "MIT"
 }
