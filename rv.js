@@ -1,6 +1,14 @@
-/*global define, XMLHttpRequest */
+// This plugin has two dependencies - Ractive, and the 'text' loader plugin
+// (download from https://github.com/requirejs/text).
 
-define( [ 'text', 'Ractive' ], function ( text, Ractive ) {
+// If those modules aren't in your root/baseUrl folder, you can either use
+// RequireJS's paths config, or modify this file so that to replace
+// `[ 'text', 'Ractive' ]` with e.g. `[ 'loaders/text', 'lib/Ractive' ]`
+//
+// See http://requirejs.org/docs/api.html#config-paths for more info about
+// the paths config
+
+define([ 'text', 'Ractive' ], function ( text, Ractive ) {
 
 	'use strict';
 
