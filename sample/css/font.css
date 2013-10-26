@@ -1,0 +1,8 @@
+@font-face{ 
+	font-family: 'Voltaire';
+	src: url('Voltaire/Voltaire.eot');
+	src: url('Voltaire/Voltaire.eot?#iefix') format('embedded-opentype'),
+	     url('Voltaire/Voltaire.woff') format('woff'),
+	     url('Voltaire/Voltaire.ttf') format('truetype'),
+	     url('Voltaire/Voltaire.svg#webfont') format('svg');
+}
