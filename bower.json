@@ -13,9 +13,9 @@
 		"type": "git",
 		"url": "https://github.com/Rich-Harris/require-ractive-plugin.git"
 	},
-	"dependencies": [{
+	"dependencies": {
 		"requirejs-text": "~2.0.10"
-	}],
+	},
 	"keywords": [
 		"requirejs",
 		"ractive",
