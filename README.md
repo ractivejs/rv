@@ -111,6 +111,7 @@ If you are inlining resources in this way, it is likely that you don't need the 
 Changelog
 ---------
 
+* 0.1.4 - switched from text plugin to Guy Bedford's [amd-loader][2] plugin, and added the `rvc.js` loader
 * 0.1.3 - file extension bug fix
 * 0.1.2 - Updated to use Ractive 0.3.0 API
 * 0.1.1 - renamed. Anglebars is now Ractive
