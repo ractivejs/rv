@@ -1,44 +1,23 @@
-// This plugin has two dependencies - Ractive, and the 'text' loader plugin
-// (download from https://github.com/requirejs/text).
+// This plugin has two dependencies - Ractive, and the 'amd-loader' loader plugin
+// (download from https://github.com/guybedford/amd-loader).
 
-// If those modules aren't in your root/baseUrl folder, you can either use
-// RequireJS's paths config, or modify this file so that to replace
-// `[ 'text', 'Ractive' ]` with e.g. `[ 'loaders/text', 'lib/Ractive' ]`
+// If those modules aren't in your root (or baseUrl) folder, you can either use
+// RequireJS's paths config, or modify this file by replacing
+// `[ 'amd-loader', 'Ractive' ]` with e.g. `[ 'loaders/amd-loader', 'lib/Ractive' ]`
 //
 // See http://requirejs.org/docs/api.html#config-paths for more info about
 // the paths config
 
-define([ 'text', 'Ractive' ], function ( text, Ractive ) {
+define([ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
+	return amdLoader( 'rv', 'html', function( name, source, req, callback, errback, config ) {
 
-	'use strict';
+		var parsed = Ractive.parse( source );
 
-	var buildMap = {};
-
-	return {
-		load: function ( name, req, onload, config ) {
-			var filename;
-
-			// add .html extension
-			filename = name + ( ( name.substr( -5 ) !== '.html' ) ? '.html' : '' );
-
-			text.get( req.toUrl( filename ), function ( template ) {
-				var result = Ractive.parse( template );
-
-				if ( config.isBuild ) {
-					buildMap[ name ] = result;
-				}
-
-				onload( result );
-			}, onload.error );
-		},
-
-		write: function ( pluginName, name, write ) {
-			if ( buildMap[ name ] === undefined ) {
-				throw 'Could not parse template ' + name;
-			}
-
-			write( 'define("' + pluginName + '!' + name + '",function(){return ' + JSON.stringify( buildMap[ name ] ) + ';})' );
+		if ( !config.isBuild ) {
+			callback( parsed );
+		} else {
+			callback( 'define("rv!' + name + '",function(){return ' + JSON.stringify( parsed ) + ';})' );
 		}
-	};
 
+	});
 });
