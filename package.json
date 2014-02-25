@@ -1,7 +1,7 @@
 {
   "name": "requirejs-ractive",
-  "version": "0.1.3",
-  "description": "RequireJS plugin to preparse Ractive templates",
+  "version": "0.1.4",
+  "description": "RequireJS plugin to load and optimise Ractive components",
   "main": "rv.js",
   "repository": {
     "type": "git",

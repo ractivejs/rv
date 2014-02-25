@@ -5,7 +5,7 @@ define( function ( require ) {
 	var Ractive = require( 'Ractive' );
 
 	var Clock = Ractive.extend({
-		
+
 		// This is the part where we use the Ractive loader plugin - by
 		// requiring 'rv!./clock.html', we're saying 'load the clock.html
 		// file, but process it with the rv loader plugin'.
@@ -16,7 +16,7 @@ define( function ( require ) {
 		//
 		// See http://requirejs.org/docs/optimization.html for more info
 		// about the RequireJS optimiser.
-		template: require( 'rv!./clock.html' ),
+		template: require( 'rv!./clock' ),
 
 		data: {
 			minor: new Array( 60 ),

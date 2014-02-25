@@ -10,8 +10,8 @@
 	baseUrl: 'js/',
 	paths: {
 		// It's important that the paths are setup like this, because the
-		// rv module has 'text' and 'Ractive' as dependencies
-		text: 'loaders/text',
+		// rv module has 'amd-loader' and 'Ractive' as dependencies
+		'amd-loader': 'loaders/amd-loader',
 		rv: 'loaders/rv',
 		Ractive: 'lib/Ractive'
 	},

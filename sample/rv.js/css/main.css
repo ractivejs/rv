@@ -2,3 +2,7 @@ body {
 	font-family: 'Voltaire';
 	color: #353535;
 }
+
+#clock {
+	max-width: 20em;
+}
