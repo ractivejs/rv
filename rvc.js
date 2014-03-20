@@ -1,6 +1,6 @@
 /*
 
-	rvc.js - v0.1.3 - 2014-02-25
+	rvc.js - v0.1.4 - 2014-03-20
 	==========================================================
 
 	Next-generation DOM manipulation - http://ractivejs.org
@@ -118,40 +118,71 @@ define( [ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
 		return function() {};
 	}();
 
-	var loadImports = function loadImports( req, definition ) {
-		return new Ractive.Promise( function( fulfil, reject ) {
-			var imports = {}, pendingImports = definition.imports.length;
-			if ( !pendingImports ) {
-				fulfil( imports );
-				return;
+	var resolveModuleId = function resolveModuleId( base, path ) {
+		var basePathParts, pathParts;
+		if ( path.charAt( 0 ) !== '.' ) {
+			return path;
+		}
+		basePathParts = base.split( '/' );
+		pathParts = path.split( '/' );
+		while ( pathParts[ 0 ] === '..' ) {
+			pathParts.shift();
+			if ( !basePathParts.pop() ) {
+				throw new Error( 'Bad module path' );
 			}
-			definition.imports.forEach( function( toImport ) {
-				req( [ 'rvc!' + toImport.href.replace( /\.html$/, '' ) ], function( Component ) {
-					imports[ toImport.name ] = Component;
-					if ( !--pendingImports ) {
-						fulfil( imports );
-					}
-				}, reject );
-			} );
-		} );
+		}
+		if ( pathParts[ 0 ] === '.' ) {
+			if ( !basePathParts.pop() ) {
+				throw new Error( 'Bad module path' );
+			}
+		}
+		return basePathParts.concat( pathParts ).join( '/' );
 	};
 
-	var loadModules = function loadModules( req, definition ) {
-		return new Ractive.Promise( function( fulfil, reject ) {
-			var modules = {};
-			if ( !definition.modules.length ) {
-				fulfil( modules );
-				return;
-			}
-			req( definition.modules, function() {
-				var args = Array.prototype.slice.call( arguments );
-				definition.modules.forEach( function( name, i ) {
-					modules[ name ] = args[ i ];
+	var loadImports = function( resolveModuleId ) {
+
+		return function loadImports( req, name, definition ) {
+			return new Ractive.Promise( function( fulfil, reject ) {
+				var imports = {}, pendingImports = definition.imports.length;
+				if ( !pendingImports ) {
+					fulfil( imports );
+					return;
+				}
+				definition.imports.forEach( function( toImport ) {
+					var moduleId = resolveModuleId( name, toImport.href );
+					req( [ 'rvc!' + moduleId.replace( /\.html$/, '' ) ], function( Component ) {
+						imports[ toImport.name ] = Component;
+						if ( !--pendingImports ) {
+							fulfil( imports );
+						}
+					}, reject );
 				} );
-				fulfil( modules );
-			}, reject );
-		} );
-	};
+			} );
+		};
+	}( resolveModuleId );
+
+	var loadModules = function( resolveModuleId ) {
+
+		return function loadModules( req, name, definition ) {
+			return new Ractive.Promise( function( fulfil, reject ) {
+				var modules = {}, mapped;
+				if ( !definition.modules.length ) {
+					fulfil( modules );
+					return;
+				}
+				mapped = definition.modules.map( function( moduleName ) {
+					return resolveModuleId( name, moduleName );
+				} );
+				req( mapped, function() {
+					var args = Array.prototype.slice.call( arguments );
+					definition.modules.forEach( function( name, i ) {
+						modules[ name ] = args[ i ];
+					} );
+					fulfil( modules );
+				}, reject );
+			} );
+		};
+	}( resolveModuleId );
 
 	var load = function( warn, loadImports, loadModules ) {
 
@@ -159,10 +190,10 @@ define( [ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
 		if ( typeof document !== 'undefined' ) {
 			head = document.getElementsByTagName( 'head' )[ 0 ];
 		}
-		return function load( req, definition, callback ) {
+		return function load( req, name, definition, callback ) {
 			Ractive.Promise.all( [
-				loadImports( req, definition ),
-				loadModules( req, definition )
+				loadImports( req, name, definition ),
+				loadModules( req, name, definition )
 			] ).then( function( dependencies ) {
 				var imports, modules, options, prop, scriptElement, exports, Component;
 				imports = dependencies[ 0 ];
@@ -252,7 +283,7 @@ define( [ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
 			if ( config.isBuild ) {
 				build( name, definition, callback );
 			} else {
-				load( req, definition, callback );
+				load( req, name, definition, callback );
 			}
 		} );
 	}( parseComponentDefinition, load, build );

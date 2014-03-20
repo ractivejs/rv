@@ -1,8 +1,12 @@
-define( function () {
+define([
+	'utils/resolveModuleId'
+], function (
+	resolveModuleId
+) {
 
 	'use strict';
 
-	return function loadImports ( req, definition ) {
+	return function loadImports ( req, name, definition ) {
 		return new Ractive.Promise( function ( fulfil, reject ) {
 			var imports = {}, pendingImports = definition.imports.length;
 
@@ -12,7 +16,9 @@ define( function () {
 			}
 
 			definition.imports.forEach( function ( toImport ) {
-				req([ 'rvc!' + toImport.href.replace( /\.html$/, '' ) ], function ( Component ) {
+				var moduleId = resolveModuleId( name, toImport.href );
+
+				req([ 'rvc!' + moduleId.replace( /\.html$/, '' ) ], function ( Component ) {
 					imports[ toImport.name ] = Component;
 
 					if ( !--pendingImports ) {

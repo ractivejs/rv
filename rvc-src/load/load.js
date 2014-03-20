@@ -16,8 +16,11 @@ define([
 		head = document.getElementsByTagName( 'head' )[0];
 	}
 
-	return function load ( req, definition, callback ) {
-		Ractive.Promise.all([ loadImports( req, definition ), loadModules( req, definition ) ]).then( function ( dependencies ) {
+	return function load ( req, name, definition, callback ) {
+		Ractive.Promise.all([
+			loadImports( req, name, definition ),
+			loadModules( req, name, definition )
+		]).then( function ( dependencies ) {
 			var imports, modules, options, prop, scriptElement, exports, Component;
 
 			imports = dependencies[0];
