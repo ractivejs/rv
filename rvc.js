@@ -229,18 +229,14 @@ define( [ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
 								options[ prop ] = exports[ prop ];
 							}
 						}
-						Component = Ractive.extend( options );
 					}
 					head.removeChild( scriptElement );
 					window.component = noConflict.component;
 					window.Ractive = noConflict.Ractive;
 					window.require = noConflict.require;
-				} else {
-					Component = Ractive.extend( {
-						template: definition.template,
-						css: definition.css,
-						components: imports
-					} );
+				}
+				if ( !Component ) {
+					Component = Ractive.extend( options );
 				}
 				callback( Component );
 			} );
