@@ -1,6 +1,6 @@
 {
   "name": "requirejs-ractive",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "RequireJS plugin to load and optimise Ractive components",
   "main": "rv.js",
   "repository": {
@@ -18,12 +18,13 @@
   "author": "Rich Harris",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "amdclean": "~1.2.1",
+    "grunt": "~0.4.4",
+    "grunt-contrib-requirejs": "~0.4.3",
+    "grunt-contrib-jshint": "~0.9.2",
+    "grunt-contrib-concat": "~0.4.0",
+    "amdclean": "~1.5.0",
     "grunt-jsbeautifier": "~0.2.6",
-    "grunt-contrib-qunit": "~0.4.0"
+    "grunt-contrib-qunit": "~0.4.0",
+    "tosource": "~0.1.1"
   }
 }
