@@ -111,6 +111,7 @@ If you are inlining resources in this way, it is likely that you don't need the 
 Changelog
 ---------
 
+* 0.1.5 - rewrote loader to use [ractivejs/rcu](https://github.com/ractivejs/rcu), plus [toSource](https://github.com/marcello3d/node-tosource) by [marcello3d](https://github.com/marcello3d). CSS is now minified (a bit) on build.
 * 0.1.4 - switched from text plugin to Guy Bedford's [amd-loader][2] plugin, and added the `rvc.js` loader
 * 0.1.3 - file extension bug fix
 * 0.1.2 - Updated to use Ractive 0.3.0 API
