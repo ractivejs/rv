@@ -2,7 +2,7 @@ define( function ( require ) {
 
 	'use strict';
 
-	var Ractive = require( 'Ractive' );
+	var Ractive = require( 'ractive' );
 
 	var Clock = Ractive.extend({
 

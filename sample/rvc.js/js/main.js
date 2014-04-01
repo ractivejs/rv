@@ -4,9 +4,9 @@ require.config({
 	paths: {
 		// It's important that the paths are setup like this, because the
 		// rv module has 'amd-loader' and 'Ractive' as dependencies
-		'amd-loader': 'loaders/amd-loader',
-		rvc: 'loaders/rvc',
-		Ractive: 'lib/Ractive'
+		'amd-loader': '../../../amd-loader',
+		rvc: '../../../rvc',
+		ractive: '../../lib/ractive-legacy'
 	}
 });
 
