@@ -8,7 +8,7 @@
 // See http://requirejs.org/docs/api.html#config-paths for more info about
 // the paths config
 
-define([ 'amd-loader', 'Ractive' ], function( amdLoader, Ractive ) {
+define([ 'amd-loader', 'ractive' ], function( amdLoader, Ractive ) {
 	return amdLoader( 'rv', 'html', function( name, source, req, callback, errback, config ) {
 
 		var parsed = Ractive.parse( source );
