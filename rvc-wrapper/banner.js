@@ -33,7 +33,7 @@
 
 */
 
-define([ 'amd-loader', 'Ractive' ], function ( amdLoader, Ractive ) {
+define([ 'amd-loader', 'ractive' ], function ( amdLoader, Ractive ) {
 
 	'use strict';
 
