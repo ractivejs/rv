@@ -1,6 +1,6 @@
 /*
 
-	rcu (Ractive component utils) - 0.1.0 - 2014-03-31
+	rcu (Ractive component utils) - 0.1.0 - 2014-04-01
 	==============================================================
 
 	Copyright 2014 Rich Harris and contributors
@@ -28,7 +28,7 @@
 
 */
 
-( function( global ) {
+define( function() {
 
 	'use strict';
 
@@ -131,14 +131,14 @@
 
 	var make = function( resolve, parse ) {
 
-		return function makeComponent( source, options, callback ) {
+		return function makeComponent( source, config, callback ) {
 			var definition, baseUrl, make, loadImport, imports, loadModule, modules, remainingDependencies, onloaded, onerror, errorMessage, ready;
-			options = options || {};
-			// Implementation-specific options
-			baseUrl = options.baseUrl || '';
-			loadImport = options.loadImport;
-			loadModule = options.loadModule;
-			onerror = options.onerror;
+			config = config || {};
+			// Implementation-specific config
+			baseUrl = config.baseUrl || '';
+			loadImport = config.loadImport;
+			loadModule = config.loadModule;
+			onerror = config.onerror;
 			definition = parse( source );
 			make = function() {
 				var options, fn, component, exports, Component, prop;
@@ -159,7 +159,7 @@
 						}
 					}
 					try {
-						fn( component, require, Ractive );
+						fn( component = {}, config.require, Ractive );
 					} catch ( err ) {
 						errorMessage = 'Error executing component script: ' + err.message || err;
 						if ( onerror ) {
@@ -220,7 +220,7 @@
 					}
 					modules = {};
 					definition.modules.forEach( function( name ) {
-						var path = resolve( baseUrl, name );
+						var path = resolve( name, baseUrl );
 						loadModule( name, path, function( Component ) {
 							modules[ name ] = Component;
 							onloaded();
@@ -248,19 +248,6 @@
 	}( parse, make, resolve, getName );
 
 
-	// export as Common JS module...
-	if ( typeof module !== "undefined" && module.exports ) {
-		module.exports = rcu;
-	}
+	return rcu;
 
-	// ... or as AMD module
-	else if ( typeof define === "function" && define.amd ) {
-		define( function() {
-			return rcu;
-		} );
-	}
-
-	// ... or as browser global
-	global.rcu = rcu;
-
-}( typeof window !== 'undefined' ? window : this ) );
+} );

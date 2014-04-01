@@ -1,10 +1,12 @@
 define([
-	'rcu'
+	'rcu.amd'
 ], function (
 	rcu
 ) {
 
 	'use strict';
+
+	rcu.init( Ractive );
 
 	return function load ( req, source, callback ) {
 		rcu.make( source, {
@@ -13,8 +15,11 @@ define([
 			},
 			loadModule: function ( name, path, callback ) {
 				req([ path ], callback );
+			},
+			require: function ( name ) {
+				return req( name );
 			}
-		})
+		}, callback );
 	};
 
 });
