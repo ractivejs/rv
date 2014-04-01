@@ -6,14 +6,16 @@ module.exports = {
 		undef: true,
 		smarttabs: true,
 		boss: true,
+		evil: true,
 		globals: {
 			define: true,
 			module: true,
 			require: true,
 			window: true,
 			document: true,
-			Ractive: true,
-			amdLoader: true
+			amdLoader: true,
+			setTimeout: true,
+			Ractive: true
 		}
 	}
 };
