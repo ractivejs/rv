@@ -3,9 +3,9 @@ define( function () {
 	'use strict';
 
 	return function ( name, definition, callback ) {
-		var dependencies = ['require','Ractive'],
+		var dependencies = ['require','ractive'],
 			dependencyArgs = ['require','Ractive'],
-			dependencyMap = [],
+			importMap = [],
 			builtModule;
 
 		// Add dependencies from <link> tags, i.e. sub-components
@@ -20,14 +20,14 @@ define( function () {
 			dependencies.push( 'rvc!' + href.replace( /\.html$/, '' ) );
 			dependencyArgs.push( argumentName );
 
-			dependencyMap.push( '"' + name + '":' + argumentName );
+			importMap.push( '"' + name + '":' + argumentName );
 		});
 
 		// Add dependencies from inline require() calls
 		dependencies = dependencies.concat( definition.modules );
 
 		builtModule = 'define("rvc!' + name +'",' + JSON.stringify(dependencies) + ',function(' + dependencyArgs.join(',') + '){' +
-			'var __options__={template:' + JSON.stringify(definition.template) + ',css:' + JSON.stringify(definition.css) + ',components:{' + dependencyMap.join( ',' ) + '}},component={};';
+			'var __options__={template:' + JSON.stringify(definition.template) + ',css:' + JSON.stringify(definition.css) + ',components:{' + importMap.join( ',' ) + '}},component={};';
 
 		if ( definition.script ) {
 			builtModule += '\n' + definition.script + '\n' +
