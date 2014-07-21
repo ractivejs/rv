@@ -61,18 +61,18 @@ define( function() {
 			modules = [];
 			// Extract certain top-level nodes from the template. We work backwards
 			// so that we can easily splice them out as we go
-			i = template.length;
+			i = template.t.length;
 			while ( i-- ) {
-				item = template[ i ];
+				item = template.t[ i ];
 				if ( item && item.t === 7 ) {
 					if ( item.e === 'link' && ( item.a && item.a.rel[ 0 ] === 'ractive' ) ) {
-						links.push( template.splice( i, 1 )[ 0 ] );
+						links.push( template.t.splice( i, 1 )[ 0 ] );
 					}
 					if ( item.e === 'script' && ( !item.a || !item.a.type || item.a.type[ 0 ] === 'text/javascript' ) ) {
-						scripts.push( template.splice( i, 1 )[ 0 ] );
+						scripts.push( template.t.splice( i, 1 )[ 0 ] );
 					}
 					if ( item.e === 'style' && ( !item.a || !item.a.type || item.a.type[ 0 ] === 'text/css' ) ) {
-						styles.push( template.splice( i, 1 )[ 0 ] );
+						styles.push( template.t.splice( i, 1 )[ 0 ] );
 					}
 				}
 			}
