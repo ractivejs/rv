@@ -14,7 +14,7 @@ Grab [rv.js](https://raw.githubusercontent.com/ractivejs/rv/master/rv.js) or ins
 
 ## Usage
 
-First, RequireJS needs to be able to find `rv.js` and `ractive.js`. Either it should be in the root of your project (or whatever `baseUrl` is configured to be), or you'll need to set up the `paths` config (obviously, change the paths as appropriate):
+First, RequireJS needs to be able to find `rv.js` and `ractive.js`. Either they should be in the root of your project (or whatever `baseUrl` is configured to be), or you'll need to set up the `paths` config (obviously, change the paths as appropriate):
 
 ```js
 require.config({
@@ -25,7 +25,7 @@ require.config({
 });
 ```
 
-Once RequireJS is configured, you can import components like so:
+Once RequireJS is configured, you can import templates like so:
 
 ```js
 // At the top-level of your app, e.g. inside your main.js file
@@ -38,10 +38,11 @@ require([ 'ractive', 'rv!template' ], function ( Ractive, parsedTemplate ) {
 
 // Inside a module
 define([ 'ractive', 'rv!template' ], function ( Ractive, parsedTemplate ) {
-  var ractive = new Ractive({
-    el: 'body',
+  var MyView = Ractive.extend({
     template: parsedTemplate
   });
+
+  return MyView;
 });
 ```
 
