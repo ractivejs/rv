@@ -9,7 +9,8 @@ require.config({
 	// These aren't used during development, but the optimiser will
 	// read this config when we run the build script
 	name: 'main',
-	out: '../../dist/js/main.js'
+	out: '../../dist/js/main.js',
+	stubModules: [ 'rv' ]
 });
 
 // Now we've configured RequireJS, we can load our dependencies and start
