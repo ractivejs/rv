@@ -1,5 +1,5 @@
 module.exports = {
-	main: 'rvc-src/**/*.js',
+	main: 'src/**/*.js',
 	options: {
 		strict: true,
 		unused: true,

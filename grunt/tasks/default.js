@@ -5,8 +5,6 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'default', [
 		'jshint',
 		'requirejs',
-		//'qunit',
-		'concat',
 		'jsbeautifier'
 	]);
 

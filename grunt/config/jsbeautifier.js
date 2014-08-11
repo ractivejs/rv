@@ -1,5 +1,5 @@
 module.exports = {
-	files: 'rvc.js',
+	files: 'rv.js',
 	options: {
 		js: {
 			indentWithTabs: true,

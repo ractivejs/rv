@@ -1,0 +1,43 @@
+<div class='rv-clock-demo'>
+	<svg viewBox='0 0 100 100'>
+
+		<!-- first create a group and move it to 50,50 so
+		     all co-ords are relative to the center -->
+		<g transform='translate(50,50)'>
+			<circle class='clock-face' r='48'/>
+
+			<!-- markers every minute (major markers every 5 minutes) -->
+			{{#each minor:i}}
+				<line class='minor' y1='42' y2='45' transform='rotate( {{
+					360 * i / minor.length
+				}} )'/>
+			{{/each}}
+
+			{{#each major:i}}
+				<line class='major' y1='35' y2='45' transform='rotate( {{
+					360 * i / major.length
+				}} )'/>
+			{{/each}}
+
+			<!-- hour hand -->
+			<line class='hour' y1='2' y2='-20' transform='rotate( {{
+				30 * date.getHours() +
+				date.getMinutes() / 2
+			}} )'/>
+
+			<!-- minute hand -->
+			<line class='minute' y1='4' y2='-30' transform='rotate( {{
+				6 * date.getMinutes() +
+				date.getSeconds() / 10
+			}} )'/>
+
+			<!-- second hand -->
+			<g transform='rotate( {{
+				6 * date.getSeconds()
+			}} )'>
+				<line class='second' y1='10' y2='-38'/>
+				<line class='second-counterweight' y1='10' y2='2'/>
+			</g>
+		</g>
+	</svg>
+</div>

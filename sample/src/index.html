@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='initial-scale=1'>
+	<title>Ractive.js + RequireJS</title>
+
+	<!-- CSS -->
+	<link rel='stylesheet' href='styles.css'>
+</html>
+
+<body>
+
+	<h1>A little R&amp;R<sup>*</sup></h1>
+
+	<!-- this is where we'll render the component -->
+	<main></main>
+
+	<p><sup>*</sup><a href='http://ractivejs.org'>Ractive.js</a> &amp; <a href='http://requirejs.org'>RequireJS</a></p>
+
+	<!-- The next line says 'load require.js, then use it to
+	     load js/main.js'. The main.js file is responsible
+	     for configuring the project and launching our app -->
+	<script src='require.js' data-main='js/main.js'></script>
+
+</body>

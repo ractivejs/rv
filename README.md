@@ -1,125 +1,110 @@
-RequireJS Ractive plugin
-==========================
+# rv.js
 
-RequireJS plugin to precompile [Ractive][1] templates. See the [sample applications][4] to get started.
+The rv plugin for [RequireJS](requirejs.org) allows you to load Ractive.js templates from HTML files, and optimise them as part of your build. This means you don't need to use multiline strings in your JavaScript, or load files with AJAX or embed templates in `<script>` tags.
 
-Quick start
------------
+It's basically the older (and, frankly, less clever and good-looking) brother of [rvc](https://github.com/ractivejs/rvc) - whereas rvc can convert [component files](https://github.com/ractivejs/component-spec) with encapsulated styles and behaviours, rv only handles templates.
 
-Put `rv.js` and/or `rvc.js` at your project's `baseUrl` along with the latest versions of [`Ractive.js`][1] and Guy Bedford's [`amd-loader.js`][2] plugin.
+[You should probably check out rvc first](https://github.com/ractivejs/rvc), and come back here if you only want the template parsing stuff.
 
-If you'd rather put them in a subfolder, that's fine too - just modify your config, eg:
+
+## Installation
+
+Grab [rv.js](https://raw.githubusercontent.com/ractivejs/rv/master/rv.js) or install it with npm (`npm i rv`) or bower (`bower i rv`).
+
+
+## Usage
+
+First, RequireJS needs to be able to find `rv.js` and `ractive.js`. Either it should be in the root of your project (or whatever `baseUrl` is configured to be), or you'll need to set up the `paths` config (obviously, change the paths as appropriate):
 
 ```js
 require.config({
-	paths: {
-		Ractive: 'lib/Ractive',
-		'amd-loader': 'plugins/amd-loader',
-		rv: 'plugins/rv',
-		rvc: 'plugins/rvc'
-	}
+  paths: {
+    ractive: 'lib/ractive',
+    rv: 'plugins/rv'
+  }
 });
 ```
 
-Then, require your HTML files as modules using the plugin syntax: `rv!path/to/template` or `rvc!/path/to/component`. The `.html` extension is assumed.
-
-
-What is rv.js?
---------------
-
-The **rv.js** loader loads a Ractive template from an HTML file and preparses it. This means we don't have to store templates as multiline strings in our JavaScript, or load them with AJAX, or store them inside `<script id='myTemplate' type='text/ractive'>` tags.
-
-It also means that if we use the Require.js optimiser (see below), the template is parsed as part of that build process, rather than being parsed in the browser each time.
-
-
-What is rvc.js?
----------------
-
-The **rvc.js** loader takes this idea a step further. Instead of just storing your *template* in a separate HTML file, you can store an entire component:
-
-**hello-world.html**
-
-```html
-<h1>Hello {{name}}!</h1>
-<p>This is a self-contained Ractive component, with HTML, CSS and JavaScript.</p>
-<button class='big-red-button' on-click='activate'>Activate!</button>
-
-<style>
-	/* These styles will be in the page as long as there are one
-	   or more instances of this component. This block is optional */
-	.big-red-button {
-		background: rgb(200,0,0);
-		color: white;
-		font-size: 2em;
-	}
-</style>
-
-<script>
-	/* Inside here, we can `require()` AMD modules: */
-	var foo = require( 'foo' );
-
-	/* We need to 'export' the component. The value of `component.exports`
-	   will be passed to `Ractive.extend()` along with the HTML and CSS -
-	   see http://docs.ractivejs.org/latest/ractive-extend for more info */
-	component.exports = {
-		init: function () {
-			this.on( 'activate', function () {
-				alert( 'Activating!' );
-			});
-		},
-
-		data: {
-			name: 'world'
-		}
-	};
-</script>
-```
-
-You'd use this component like so:
-
-**app.js**
+Once RequireJS is configured, you can import components like so:
 
 ```js
-define( function ( require ) {
+// At the top-level of your app, e.g. inside your main.js file
+require([ 'ractive', 'rv!template' ], function ( Ractive, parsedTemplate ) {
+  var ractive = new Ractive({
+    el: 'body',
+    template: parsedTemplate
+  });
+});
 
-	'use strict';
+// Inside a module
+define([ 'ractive', 'rv!template' ], function ( Ractive, parsedTemplate ) {
+  var ractive = new Ractive({
+    el: 'body',
+    template: parsedTemplate
+  });
+});
+```
 
-	var HelloWorldView = require( 'rvc!path/to/hello-world' );
+Note that the `.html` file extension is omitted - this is assumed.
 
-	var view = new HelloWorldView({
-		el: 'body'
-	});
+Template paths work just like regular module paths, so they can be relative (`rv!../template`), or below an entry in the paths config:
 
+```js
+require.config({
+  paths: {
+    ractive: 'lib/ractive',
+    rv: 'plugins/rv',
+    templates: 'path/to/ractive_templates'
+  }
+});
+
+require([ 'ractive', 'rv!templates/foo' ], function ( Ractive, fooTemplate ) {
+  var ractive = new Ractive({
+    el: 'body',
+    template: fooTemplate
+  });
 });
 ```
 
 
-Optimisation
-------------
+## Optimisation
 
-Both `rv.js` and `rvc.js` work with the [RequireJS Optimizer][3], so you can incorporate your compiled templates into your project and avoid the initial computation happening on the client. You don't need to 'do' anything, it should just work.
+The great feature of RequireJS is that while you can develop your app without having to rebuild it every time you change a file, you can also bundle it into a single file for production using the [optimiser](http://requirejs.org/docs/optimization.html).
 
-If you are inlining resources in this way, it is likely that you don't need the `amd-loader.js` and `rv.js`/`rvc.js` modules in your final built file. To shave off a few kilobytes, use the `stubModules` option, adding this to your `build.js` config:
+In addition to this 'inlining' of your templates, rv will parse them so that no additional computation needs to happen in the browser.
+
+Once your project is optimised, you don't need the plugin itself, so add `rv` to the `stubModules` option:
 
 ```js
-({
-	stubModules: [ 'rv', 'rvc', 'amd-loader' ]
-})
+// optimiser config
+{
+  paths: {
+    ractive: 'lib/ractive',
+    rv: 'plugins/rv'
+  },
+  stubModules: [ 'rv' ]
+}
 ```
 
+Consult the [documentation](http://requirejs.org/docs/optimization.html) for more information on using the optimiser.
 
-Changelog
----------
 
+## Changelog
+
+* 0.1.6 - rvc.js and rv.js now live in separate repos. Switch to using toSource for rv.js instead of JSON.stringify
 * 0.1.5 - rewrote loader to use [ractivejs/rcu](https://github.com/ractivejs/rcu), plus [toSource](https://github.com/marcello3d/node-tosource) by [marcello3d](https://github.com/marcello3d). CSS is now minified (a bit) on build.
-* 0.1.4 - switched from text plugin to Guy Bedford's [amd-loader][2] plugin, and added the `rvc.js` loader
+* 0.1.4 - switched from text plugin to Guy Bedford's [amd-loader][https://github.com/guybedford/amd-loader] plugin, and added the `rvc.js` loader
 * 0.1.3 - file extension bug fix
 * 0.1.2 - Updated to use Ractive 0.3.0 API
 * 0.1.1 - renamed. Anglebars is now Ractive
 * 0.1.0 - first version
 
 
-[1]: https://github.com/RactiveJS/Ractive
-[2]: https://github.com/guybedford/amd-loader
-[3]: http://requirejs.org/docs/optimization.html
-[4]: https://github.com/RactiveJS/requirejs-ractive/tree/master/sample
+## Credits
+
+Many thanks to Guy Bedford for creating [amd-loader](https://github.com/guybedford/amd-loader), and Marcello Bastéa-Forte for [tosource](https://github.com/marcello3d/node-tosource).
+
+
+## License
+
+MIT.
