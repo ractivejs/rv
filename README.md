@@ -119,7 +119,7 @@ require([ 'ractivejs' ], function ( Ractive ) {
 You should also stub the `ractive` module in the `build.js` file, otherwise both versions will be included in the final script:
 
 ```js
-  stubModules: [ 'amd-loader', 'rv', 'ractive' ]
+  stubModules: [ 'rv', 'ractive' ]
 ```
 
 
