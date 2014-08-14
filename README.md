@@ -89,6 +89,39 @@ Once your project is optimised, you don't need the plugin itself, so add `rv` to
 
 Consult the [documentation](http://requirejs.org/docs/optimization.html) for more information on using the optimiser.
 
+## Using Ractive Runtime
+
+Because rv parses your templates during the build phase it is not necessary to include Ractive's `parse` method in the built script. A version of Ractive that does not include the `parse` method is included in the Ractive directory under the name of `ractive.runtime.js`. By building with this file you can save 15KB or so of code.
+
+You need to include both `ractive` and `ractive.runtime` in your RequireJS configuration.
+
+```js
+require.config({
+  paths: {
+    rv: 'plugins/rv',
+    ractive: 'lib/ractive', // The original Ractive library - used by the rv plugin
+    ractivejs: "lib/ractive.runtime" // The runtime version of Ractive - this is the path you should use in your require statements
+  }
+});
+```
+
+You should then **always use the `ractivejs` path** when loading modules (the original `ractive` path is only there for the rv plugin):
+
+```js
+require([ 'ractivejs' ], function ( Ractive ) {
+  var ractive = new Ractive({
+    el: 'body',
+    template: "<h1>Hello world</h1>"
+  });
+});
+```
+
+You should also stub the `ractive` module in the `build.js` file, otherwise both versions will be included in the final script:
+
+```js
+  stubModules: [ 'amd-loader', 'rv', 'ractive' ]
+```
+
 
 ## Changelog
 
