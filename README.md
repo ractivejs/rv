@@ -93,33 +93,20 @@ Consult the [documentation](http://requirejs.org/docs/optimization.html) for mor
 
 Because rv parses your templates during the build phase it is not necessary to include Ractive's `parse` method in the built script. A version of Ractive that does not include the `parse` method is included in the Ractive directory under the name of `ractive.runtime.js`. By building with this file you can save 15KB or so of code.
 
-You need to include both `ractive` and `ractive.runtime` in your RequireJS configuration.
+You should include the `ractive.runtime` file instead of `ractive`/`ractive.min` in your RequireJS configuration. However, the rv module needs to have access to the `parse()` method still. This can be achieved using RequireJS's `map` option.
 
 ```js
 require.config({
   paths: {
     rv: 'plugins/rv',
-    ractive: 'lib/ractive', // The original Ractive library - used by the rv plugin
-    ractivejs: "lib/ractive.runtime" // The runtime version of Ractive - this is the path you should use in your require statements
+    ractive: "lib/ractive.runtime" // Use the Ractive runtime script
+  },
+  map: {
+    rv: {
+      ractive: 'lib/ractive' // Tell the rv module to use the original version of Ractive, which includes the `parse()` method
+    }
   }
 });
-```
-
-You should then **always use the `ractivejs` path** when loading modules (the original `ractive` path is only there for the rv plugin):
-
-```js
-require([ 'ractivejs' ], function ( Ractive ) {
-  var ractive = new Ractive({
-    el: 'body',
-    template: "<h1>Hello world</h1>"
-  });
-});
-```
-
-You should also stub the `ractive` module in the `build.js` file, otherwise both versions will be included in the final script:
-
-```js
-  stubModules: [ 'amd-loader', 'rv', 'ractive' ]
 ```
 
 
