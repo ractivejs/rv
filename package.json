@@ -1,6 +1,6 @@
 {
   "name": "rv",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "RequireJS plugin to load and optimise Ractive templates",
   "main": "rv.js",
   "repository": {
