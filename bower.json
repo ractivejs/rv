@@ -1,7 +1,7 @@
 {
 	"name": "rv",
 	"description": "RequireJS plugin to load and optimise Ractive templates",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"author": "Rich Harris",
 	"license": "MIT",
 	"main": ["rv.js"],
