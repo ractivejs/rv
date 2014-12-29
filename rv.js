@@ -1,6 +1,6 @@
 /*
 
-	rv.js - v0.1.6 - 2014-08-10
+	rv.js - v0.1.6 - 2014-12-28
 	==========================================================
 
 	https://github.com/ractivejs/rv
@@ -149,7 +149,7 @@ define( [ 'ractive' ], function( Ractive ) {
 				};
 				xhr.send( null );
 			};
-		} else if ( typeof process !== 'undefined' && process.versions && !! process.versions.node ) {
+		} else if ( typeof process !== 'undefined' && process.versions && !!process.versions.node ) {
 			var fs = requirejs.nodeRequire( 'fs' );
 			loader.fetch = function( path, callback, errback ) {
 				try {
@@ -205,11 +205,12 @@ define( [ 'ractive' ], function( Ractive ) {
 	tosource = function() {
 
 		var KEYWORD_REGEXP = /^(abstract|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|undefined|var|void|volatile|while|with)$/;
+		/* toSource by Marcello Bastea-Forte - zlib license */
 		return function( object, filter, indent, startingIndent ) {
 			var seen = [];
-			return walk( object, filter, indent === undefined ? '  ' : indent || '', startingIndent || '' );
+			return walk( object, filter, indent === undefined ? '  ' : indent || '', startingIndent || '', seen );
 
-			function walk( object, filter, indent, currentIndent ) {
+			function walk( object, filter, indent, currentIndent, seen ) {
 				var nextIndent = currentIndent + indent;
 				object = filter ? filter( object ) : object;
 				switch ( typeof object ) {
@@ -217,9 +218,10 @@ define( [ 'ractive' ], function( Ractive ) {
 						return JSON.stringify( object );
 					case 'boolean':
 					case 'number':
-					case 'function':
 					case 'undefined':
 						return '' + object;
+					case 'function':
+						return object.toString();
 				}
 				if ( object === null )
 					return 'null';
@@ -227,8 +229,9 @@ define( [ 'ractive' ], function( Ractive ) {
 					return object.toString();
 				if ( object instanceof Date )
 					return 'new Date(' + object.getTime() + ')';
-				if ( seen.indexOf( object ) >= 0 )
-					return '{$circularReference:1}';
+				var seenIndex = seen.indexOf( object ) + 1;
+				if ( seenIndex > 0 )
+					return '{$circularReference:' + seenIndex + '}';
 				seen.push( object );
 
 				function join( elements ) {
@@ -236,12 +239,12 @@ define( [ 'ractive' ], function( Ractive ) {
 				}
 				if ( Array.isArray( object ) ) {
 					return '[' + join( object.map( function( element ) {
-						return walk( element, filter, indent, nextIndent );
+						return walk( element, filter, indent, nextIndent, seen.slice() );
 					} ) ) + ']';
 				}
 				var keys = Object.keys( object );
 				return keys.length ? '{' + join( keys.map( function( key ) {
-					return ( legalKey( key ) ? key : JSON.stringify( key ) ) + ':' + walk( object[ key ], filter, indent, nextIndent );
+					return ( legalKey( key ) ? key : JSON.stringify( key ) ) + ':' + walk( object[ key ], filter, indent, nextIndent, seen.slice() );
 				} ) ) + '}' : '{}';
 			}
 		};
